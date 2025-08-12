@@ -1,3 +1,5 @@
+import myapi
+
 def main():
     print("Hello from fastapi-demo!")
 
