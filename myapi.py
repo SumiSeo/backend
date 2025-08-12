@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Path
+from typing import Optional
 
 app = FastAPI()
 
@@ -37,12 +38,11 @@ def get_student(student_id: int = Path(..., description="The ID of the student t
     
 
 # do not define with query parameter
-@app.get("/get-by-name")
-def get_student(name: str):
-    for student_id in students:
-        if students[student_id]["name"] == name:
-            return students[student_id]
-    return {"Data": "Not found"}
+@app.get("/get-by-name/{student_id}")
+def get_student(*, student_id:int, name: Optional[str] = None, test:int): #If I None, meaning, it is not required 
+    if students[student_id]["name"] == name:
+        return students[student_id]
+    return {"Data": "Not Found"}
 # POST
 # PUT
 # DELETE
