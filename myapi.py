@@ -54,6 +54,12 @@ class Student(BaseModel):
     age: int
     year: int
     
+class UpdateStudent(BaseModel):
+    name: Optional[str] = None
+    age : Optional[int] = None
+    year: Optional[int] = None
+    
+    
     
 @app.post("/create-student/{student_id}")
 def create_student(student_id: int, student: Student):
@@ -65,10 +71,16 @@ def create_student(student_id: int, student: Student):
 
 
 @app.put("/update-student/{student_id}")
-def update_student(student_id: int, name: str):
-    for student_id in students:
-        if student_id == student_id:
-            students[student_id]["name"] = name
-            return students[student_id]
-        else:
-            return {"Error":"This student id do not exist"}
+def update_student(student_id: int, student: UpdateStudent = None):
+    if student_id not in students:
+        return {"Error":"This student id does not exist"}
+    
+    update_data = student.model_dump()
+    print(update_data)
+
+    for key, value in update_data.items():
+        if value is not None:
+            students[student_id][key] = value
+            
+    return students[student_id]
+        
